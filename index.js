@@ -33,12 +33,12 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result);
     })
-    app.get('/product/name' , async(req,res) =>{
+    app.get('/brand' , async(req,res) =>{
         const cursor =brandCollection.find();
         const result = await cursor.toArray();
         res.send(result);
     })
-    app.post(`/product/name`,async(req,res) =>{
+    app.post(`/brand`,async(req,res) =>{
         const brandData = req.body;
         console.log(brandData);
         const result = await brandCollection.insertOne(brandData);
