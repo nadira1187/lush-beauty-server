@@ -29,6 +29,7 @@ async function run() {
 
     const productCollection =client.db('productDB').collection('product')
     const brandCollection =client.db('brandDb').collection('brand');
+    const cartCollection = client.db('cartDB').collection('cart');
     app.get('/product' , async(req,res) =>{
         const cursor =productCollection.find();
         const result = await cursor.toArray();
@@ -64,6 +65,15 @@ async function run() {
         const result = await productCollection.insertOne(productData);
         res.send(result);
      })  
+     app.post('/cart/:email',async(req,res) =>{
+      const userEmail = req.params.email;
+      const productData = req.body;
+      console.log(productData);
+      const cartItem ={email:userEmail,product:productData
+      }
+      const result = await cartCollection.insertOne(cartItem);
+      res.send(result);
+   })  
      app.put('/products/:id',async(req,res)=>{
       const id=req.params.id;
       const filter={_id: new ObjectId(id)}
