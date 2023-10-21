@@ -1,9 +1,8 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require ('express');
-const { ObjectId } = require('mongodb');
+const app =express();
 const cors = require('cors');
 require('dotenv').config()
-const app =express();
+const { MongoClient, ServerApiVersion ,ObjectId } = require('mongodb');
 const port =process.env.PORT|| 5000;
 
 //middleware
@@ -25,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const productCollection =client.db('productDB').collection('product')
     const brandCollection =client.db('brandDb').collection('brand');
@@ -76,10 +75,13 @@ async function run() {
       const result = await cartCollection.insertOne(productData);
       res.send(result);
    })  
-   app.delete('/cart/:id', async(req,res)=>{
-    const id =req.params.id;
-    const query ={_id: new ObjectId(id)}
-    const result =await cartCollection.findOneAndDelete(query)
+   app.delete('/delete/:id', async(req,res)=>{
+    const deleteId =req.params.id;
+    console.log(deleteId)
+    const query ={ _id: deleteId}
+    const result = await cartCollection.deleteOne(query);
+    console.log(result)
+    console.log(query)
     res.send(result);
    })
      app.put('/products/:id',async(req,res)=>{
